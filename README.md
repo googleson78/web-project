@@ -4,7 +4,7 @@
 1. `./stack.sh instal --local-bin-path=.`
 2. _wait a long time the first time around_
 
-You should now have an executable called `service` inside the `assessment` folder.
+You should now have an executable called `service-exe` inside the `assessment` folder.
 
 Note that you can also build (and e.g. also use `ghci`) without using `stack.sh` (which runs a build inside a docker image).
 You'll need `libpcre3-dev` + `libmariadbclient-dev` (this is what they're called on debian).
