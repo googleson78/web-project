@@ -25,7 +25,7 @@ main :: IO ()
 main = do
   runNoLoggingT $ withMySQLConn connectInfo $ runReaderT $ runMigration migrateAll
 
-  runNoLoggingT $ withMySQLPool @(NoLoggingT IO) connectInfo 100 \pool ->
+  runNoLoggingT $ withMySQLPool connectInfo 100 \pool ->
     liftIO $ run 3000 $ serve api $ hoistServer api (runServer pool) apiHandler
   where
     runServer :: Pool SqlBackend -> ReaderT App Handler a -> Handler a
