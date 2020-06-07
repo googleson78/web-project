@@ -1,0 +1,5 @@
+*.cabal
+.stack
+.stack-work
+service-exe
+assessment-service

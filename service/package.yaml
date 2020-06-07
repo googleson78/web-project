@@ -1,0 +1,41 @@
+name:                service
+version:             0.1.0.0
+license:             BSD3
+
+ghc-options:
+- -Wall
+- -Werror
+
+dependencies:
+- base >= 4.7 && < 5
+- aeson
+- esqueleto
+- generic-lens
+- microlens
+- monad-logger
+- mtl
+- mysql
+- persistent
+- persistent-mysql
+- persistent-template
+- resource-pool
+- servant
+- servant-server
+- text
+- transformers
+- warp
+- unliftio-core
+
+library:
+  source-dirs: src
+
+executables:
+  service-exe:
+    main:                Main.hs
+    source-dirs:         app
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - service
