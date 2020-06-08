@@ -1,7 +1,7 @@
 ## Building
 
 0. Have `docker`
-1. `./stack.sh instal --local-bin-path=.`
+1. `./stack.sh install --local-bin-path=.`
 2. _wait a long time the first time around_
 
 You should now have an executable called `service-exe` inside the `assessment` folder.
