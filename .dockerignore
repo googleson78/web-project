@@ -1,3 +1,5 @@
 .git
 service/\.stack-work/**/*
 service/\.stack/**/*
+service/\.stack-work-docker/**/*
+service/\.stack-docker/**/*
