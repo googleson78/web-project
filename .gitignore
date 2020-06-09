@@ -1,5 +1,7 @@
 *.cabal
 .stack
 .stack-work
+.stack-docker
+.stack-work-docker
 service-exe
 assessment-service
