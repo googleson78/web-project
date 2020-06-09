@@ -17,6 +17,8 @@ This build is in place so that
 
 0. Build the service
 1. `docker build -t <some-name> .`
-2. `docker run -d -p <some-port>:3000 <some-name>`
+2. `docker run -d -p <some-port>:80 <some-name>`
 
-You should now have the service running at `<some-port>`.
+You should now have an nginx server running at `<some-port>`.
+
+The haskell service should be running at `localhost:<some-port>/api/*`, and you can also see a php info file at `localhost:<some-port>/info.php`.

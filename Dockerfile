@@ -1,14 +1,14 @@
 FROM haskell:8.8.3
 
 RUN apt-get update
-RUN apt-get install -y nginx mariadb-server libpcre3-dev libmariadbclient-dev
-# required by persistent-mysql
+RUN apt-get install -y nginx php-fpm mariadb-server libpcre3-dev libmariadbclient-dev
+# last ones are required by persistent-mysql
 RUN service mysql start && echo 'create database db' | mysql
 
 COPY service/service-exe /var/www/assessment-service
-
-EXPOSE 3000
+COPY php/info.php /var/www/html/info.php
+COPY nginx/default /etc/nginx/sites-enabled/default
 
 WORKDIR /var/www/
 
-ENTRYPOINT service mysql start && /var/www/assessment-service
+ENTRYPOINT service nginx start && service php7.3-fpm start && service mysql start && /var/www/assessment-service
