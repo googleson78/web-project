@@ -16,8 +16,7 @@ This build is in place so that
 ## Running
 
 0. Build the service
-1. Copy `service/service-exe` file to `deploy/assessment-service` (TODO: automate this?)
-2. `docker build -t <some-name> deploy`
-3. `docker run -d -p <some-port>:3000 <some-name>`
+1. `docker build -t <some-name> .`
+2. `docker run -d -p <some-port>:3000 <some-name>`
 
 You should now have the service running at `<some-port>`.

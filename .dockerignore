@@ -1,0 +1,3 @@
+.git
+service/\.stack-work/**/*
+service/\.stack/**/*
