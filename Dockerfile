@@ -6,7 +6,7 @@ RUN apt-get install -y nginx php-fpm mariadb-server libpcre3-dev libmariadbclien
 RUN service mysql start && echo 'create database db' | mysql
 
 COPY service/service-exe /var/www/assessment-service
-COPY php/info.php /var/www/html/info.php
+COPY php/*.php /var/www/html/
 COPY nginx/default /etc/nginx/sites-enabled/default
 
 WORKDIR /var/www/
