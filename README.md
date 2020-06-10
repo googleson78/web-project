@@ -8,6 +8,11 @@ You should now have an nginx server running at `<some-port>`.
 
 The haskell service should be running at `localhost:<some-port>/api/*`, and you can also see a php info file at `localhost:<some-port>/info.php`.
 
+You can also run the image environemnt interactively with `docker run --rm --entrypoint /bin/bash -it <some-name>`.
+However, this will not start the `nginx`/`php-fpm`/`mysql`/etc services automatically, because they are usually started
+as the `ENTRYPOINT` for the docker image.
+
+
 ## Building
 
 0. Have `docker`
