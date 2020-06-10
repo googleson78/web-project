@@ -2,7 +2,7 @@
 
 0. [Build the service](#Building)
 1. `docker build -t <some-name> .`
-2. `docker run -d -p <some-port>:80 <some-name>`
+2. `docker run --rm -d -p <some-port>:80 <some-name>`
 
 You should now have an nginx server running at `<some-port>`.
 
