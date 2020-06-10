@@ -1,3 +1,13 @@
+## Running
+
+0. [Build the service](#Building)
+1. `docker build -t <some-name> .`
+2. `docker run -d -p <some-port>:80 <some-name>`
+
+You should now have an nginx server running at `<some-port>`.
+
+The haskell service should be running at `localhost:<some-port>/api/*`, and you can also see a php info file at `localhost:<some-port>/info.php`.
+
 ## Building
 
 0. Have `docker`
@@ -11,13 +21,3 @@ You'll need `libpcre3-dev` + `libmariadbclient-dev` (this is what they're called
 
 This build is in place so that you can easily run a "dev" server afterwards, refer to [Running](#Running).
 Building it on your machine might cause a `libc` mismatch between what is in the "deploy" image.
-
-## Running
-
-0. Build the service
-1. `docker build -t <some-name> .`
-2. `docker run -d -p <some-port>:80 <some-name>`
-
-You should now have an nginx server running at `<some-port>`.
-
-The haskell service should be running at `localhost:<some-port>/api/*`, and you can also see a php info file at `localhost:<some-port>/info.php`.
