@@ -9,9 +9,8 @@ You should now have an executable called `service-exe` inside the `assessment` f
 Note that you can also build (and e.g. also use `ghci`) without using `stack.sh` (which runs a build inside a docker image).
 You'll need `libpcre3-dev` + `libmariadbclient-dev` (this is what they're called on debian).
 
-This build is in place so that
-* there are no libc mismatches between `deploy` and what you're building
-* you can easily run a "dev" server afterwards, using `deploy`
+This build is in place so that you can easily run a "dev" server afterwards, refer to [Running](#Running).
+Building it on your machine might cause a `libc` mismatch between what is in the "deploy" image.
 
 ## Running
 
