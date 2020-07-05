@@ -14,7 +14,7 @@ as the `ENTRYPOINT` for the docker image.
 
 You can also use ssh to access the container while it's running via password `asdf`:
 ```
-ssh -p 3333 root@localhost
+ssh -p <some-other-port> root@localhost
 ```
 
 
