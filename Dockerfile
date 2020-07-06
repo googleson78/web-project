@@ -15,6 +15,7 @@ RUN service mysql start && echo 'create database db' | mysql
 
 COPY service/service-exe /var/www/assessment-service
 COPY php/*.php /var/www/html/
+COPY styles/*.css /var/www/html/styles/
 COPY nginx/default /etc/nginx/sites-enabled/default
 
 WORKDIR /var/www/
