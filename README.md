@@ -2,7 +2,7 @@
 
 0. [Build the service](#Building)
 1. `docker build -t <some-name> .`
-2. `docker run --rm -d -p <some-port>:80 <some-name>`
+2. `docker run --rm -d -p <some-port>:80 -p <some-other-port>:22 <some-name>`
 
 You should now have an nginx server running at `<some-port>`.
 
@@ -11,6 +11,11 @@ The haskell service should be running at `localhost:<some-port>/api/*`, and you 
 You can also run the image environemnt interactively with `docker run --rm --entrypoint /bin/bash -it <some-name>`.
 However, this will not start the `nginx`/`php-fpm`/`mysql`/etc services automatically, because they are usually started
 as the `ENTRYPOINT` for the docker image.
+
+You can also use ssh to access the container while it's running via password `asdf`:
+```
+ssh -p <some-other-port> root@localhost
+```
 
 
 ## Building
