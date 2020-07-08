@@ -1,5 +1,6 @@
-{-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE OverloadedLabels #-}
+{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE ViewPatterns #-}
 
 module Submit
   ( Submission (..), Program (..)
@@ -35,7 +36,8 @@ data Submission = Submission
 
 data Result = Result
   { passed :: Bool
-  , result :: Text
+  , resultOutput :: Text
+  , resultError :: Text
   }
   deriving stock Generic
   deriving anyclass (ToJSON, FromJSON)
@@ -47,17 +49,19 @@ runTests Task {language, tests, expectedFilename} program =
       Text.writeFile "tests" tests
       Text.writeFile expectedFilename $ getProgram program
 
-    (exitCode, stdout, _) <- readProcess $ proc "racket" ["tests"]
+    (exitCode, (decodeOutput -> stdout), (decodeOutput -> stderr)) <- readProcess $ proc "racket" ["tests"]
 
     case exitCode of
       ExitFailure _ -> pure Nothing
       ExitSuccess ->
-        let utf8Output = Text.decodeUtf8 $ LBS.toStrict stdout
-         in pure $ Just $
-              Result
-                { passed = containsFailure language utf8Output
-                , result = utf8Output
-                }
+        pure $ Just $
+          Result
+            { passed = not (containsFailure language stdout) && not (containsFailure language stderr)
+            , resultOutput = stdout
+            , resultError = stderr
+            }
+  where
+    decodeOutput = Text.decodeUtf8 . LBS.toStrict
 
 containsFailure :: Language -> Text -> Bool
 containsFailure Racket = Text.isInfixOf "FAILURE"
