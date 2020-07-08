@@ -25,9 +25,9 @@ type API =
   AddTask :<|>
   Submit
 
-type Register = ReqBody '[JSON] User :> PostNoContent
+type Register = "user" :> ReqBody '[JSON] User :> PostNoContent
 
-type Lookup = Capture "name" Text :> Get '[JSON] User
+type Lookup = "user" :> Capture "name" Text :> Get '[JSON] User
 
 type GetTasks = "task" :> Get '[JSON] [(TaskId, Task)]
 
