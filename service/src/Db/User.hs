@@ -1,7 +1,4 @@
-{-# LANGUAGE 
-   RecordWildCards,
-   NamedFieldPuns
-   #-}
+{-# LANGUAGE RecordWildCards #-}
 
 module Db.User
   ( toUser, fromUser

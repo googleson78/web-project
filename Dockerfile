@@ -2,7 +2,10 @@ FROM haskell:8.8.3
 
 RUN apt-get update
 # last ones are required by persistent-mysql
-RUN apt-get install -y ssh nginx php-fpm mariadb-server libpcre3-dev libmariadbclient-dev
+RUN apt-get install -y racket ssh nginx php-fpm mariadb-server libpcre3-dev libmariadbclient-dev
+
+# install required racket testing libraries
+RUN raco pkg install --auto quickcheck
 
 # allow people to log in as root
 RUN sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config

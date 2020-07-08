@@ -9,12 +9,16 @@ ghc-options:
 dependencies:
 - base >= 4.7 && < 5
 - aeson
+- bytestring
 - esqueleto
+- exceptions
 - generic-lens
 - microlens
 - monad-logger
 - mtl
 - mysql
+- path
+- path-io
 - persistent
 - persistent-mysql
 - persistent-template
@@ -23,8 +27,20 @@ dependencies:
 - servant-server
 - text
 - transformers
-- warp
+- typed-process
 - unliftio-core
+- warp
+
+default-extensions:
+- BlockArguments
+- DeriveAnyClass
+- DeriveGeneric
+- DerivingStrategies
+- GeneralisedNewtypeDeriving
+- LambdaCase
+- NamedFieldPuns
+- TypeApplications
+- TypeOperators
 
 library:
   source-dirs: src
