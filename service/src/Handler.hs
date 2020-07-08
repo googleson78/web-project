@@ -7,7 +7,7 @@ module Handler
   ( apiHandler
   ) where
 
-import API (Submit, API, Register, Lookup)
+import API (GetTasks, AddTask, Submit, API, Register, Lookup)
 import App (runQuery, App)
 import Control.Monad.Catch (MonadMask)
 import Control.Monad.Except (MonadError)
@@ -21,6 +21,7 @@ import Prelude hiding (lookup)
 import Servant (ServerT)
 import Servant (err404)
 import Servant (err500, ServerError(..), throwError, (:<|>)(..))
+import Task (Task)
 import Servant.API (NoContent(..))
 import Submit (runTests)
 import qualified Database.Persist as Persistent
@@ -32,6 +33,8 @@ apiHandler :: (MonadMask m, MonadError ServerError m, MonadIO m, MonadReader App
 apiHandler =
   register :<|>
   lookup :<|>
+  getTasks :<|>
+  addTask :<|>
   submit
 
 register :: (MonadIO m, MonadReader App m) => ServerT Register m
@@ -45,6 +48,16 @@ lookup name = do
   case found of
     Nothing -> throwError $ err404
     Just user -> pure $ Db.toUser $ entityVal user
+
+getTasks :: (MonadIO m, MonadReader App m) => ServerT GetTasks m
+getTasks = fmap (map convert) $ runQuery $ select $ from pure
+  where
+    convert :: Entity Db.Task -> (Db.TaskId, Task)
+    convert Entity {entityKey, entityVal} = (entityKey, Db.toTask entityVal)
+
+
+addTask :: (MonadIO m, MonadReader App m) => ServerT AddTask m
+addTask = runQuery . Persistent.insert . Db.fromTask
 
 submit :: (MonadMask m, MonadIO m, MonadError ServerError m, MonadReader App m) => ServerT Submit m
 submit submission  = do
