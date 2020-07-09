@@ -18,7 +18,10 @@ import Db.Schema (TaskId)
 api :: Proxy API
 api = Proxy
 
-type API =
+-- | We need to add an \"api\" prefix, so that URIs are consistent for everything (requests, cookies, etc).
+type API = "api" :> API'
+
+type API' =
   Register :<|>
   Lookup :<|>
   GetTasks :<|>
