@@ -1,58 +1,64 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 require_once 'db-config.php';
 
 $username = $password = $confirm_password = '';
 $username_err = $password_err = $confirm_password_err = '';
 
+echo " : ";
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    if (empty(trim($_POST['username']))) {
-        $username_err = 'Please enter a username.';
-    } else {
-        $sql = 'SELECT username FROM users WHERE username = ?';
+    // if (empty(trim($_POST['username']))) {
+    //     $username_err = 'Please enter a username.';
+    // } else {
+    //     $sql = 'SELECT id FROM user WHERE username = ?';
 
-        if ($stmt = mysqli_prepare($link, $sql)) {
-            mysqli_stmt_bind_param($stmt, 's', $param_username);
+    //     if ($stmt = mysqli_prepare($link, $sql)) {
+    //         mysqli_stmt_bind_param($stmt, 's', $param_username);
 
-            $param_username = trim($_POST['username']);
+    //         $param_username = trim($_POST['username']);
 
-            if (mysqli_stmt_execute($stmt)) {
-                mysqli_stmt_store_result($stmt);
+    //         if (mysqli_stmt_execute($stmt)) {
+    //             mysqli_stmt_store_result($stmt);
 
-                if (mysqli_stmt_num_rows($stmt) == 1) {
-                    $username_err = 'This username is already taken.';
-                } else {
+    //             if (mysqli_stmt_num_rows($stmt) == 1) {
+    //                 $username_err = 'This username is already taken.';
+    //             } else {
                     $username = trim($_POST['username']);
-                }
-            } else {
-                echo 'Oops! Something went wrong. Please try again later.';
-            }
-            mysqli_stmt_close($stmt);
-        }
-    }
+    //             }
+    //         } else {
+    //             echo 'Oops! Something went wrong. Please try again later.';
+    //         }
+    //         mysqli_stmt_close($stmt);
+    //     }
+    // }
 
-    if (empty(trim($_POST['password']))) {
-        $password_err = 'Please enter a password.';
-    } elseif (strlen(trim($_POST['password'])) < 6) {
-        $password_err = 'Password must have atleast 6 characters.';
-    } else {
+    // if (empty(trim($_POST['password']))) {
+    //     $password_err = 'Please enter a password.';
+    // } elseif (strlen(trim($_POST['password'])) < 6) {
+    //     $password_err = 'Password must have atleast 6 characters.';
+    // } else {
         $password = trim($_POST['password']);
-    }
+    // }
 
-    if (empty(trim($_POST['confirm_password']))) {
-        $confirm_password_err = 'Please confirm password.';
-    } else {
-        $confirm_password = trim($_POST['confirm_password']);
-        if (empty($password_err) && $password != $confirm_password) {
-            $confirm_password_err = 'Password did not match.';
-        }
-    }
+    // if (empty(trim($_POST['confirm_password']))) {
+    //     $confirm_password_err = 'Please confirm password.';
+    // } else {
+    //     $confirm_password = trim($_POST['confirm_password']);
+    //     if (empty($password_err) && $password != $confirm_password) {
+    //         $confirm_password_err = 'Password did not match.';
+    //     }
+    // }
 
-    if (
-        empty($username_err) &&
-        empty($password_err) &&
-        empty($confirm_password_err)
-    ) {
-        $sql = 'INSERT INTO users (username, password) VALUES (?, ?)';
+    // if (
+    //     empty($username_err) &&
+    //     empty($password_err) &&
+    //     empty($confirm_password_err)
+    // ) {
+        $sql = 'INSERT INTO user (name, password) VALUES (?, ?)';
 
         if ($stmt = mysqli_prepare($link, $sql)) {
             mysqli_stmt_bind_param(
@@ -68,12 +74,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             if (mysqli_stmt_execute($stmt)) {
                 header('location: login.php');
             } else {
+                echo 'the username is : ' . $param_username;
+                echo 'the password is : ' . $param_password;
                 echo 'Something went wrong. Please try again later.';
+                print_r(mysqli_stmt_error_list($stmt));
             }
 
             mysqli_stmt_close($stmt);
         }
-    }
+    // }
 
     mysqli_close($link);
 }
