@@ -10,7 +10,8 @@ import Task (Task(..))
 toTask :: Db.Task -> Task
 toTask Db.Task {..} = 
   Task
-    { expectedFilename = taskExpectedFilename
+    { name = taskName
+    , expectedFilename = taskExpectedFilename
     , language = taskLanguage
     , tests = taskTests
     }
@@ -18,7 +19,8 @@ toTask Db.Task {..} =
 fromTask :: Task -> Db.Task
 fromTask Task {..} = 
   Db.Task
-    { taskExpectedFilename = expectedFilename
+    { taskName = name
+    , taskExpectedFilename = expectedFilename
     , taskLanguage = language
     , taskTests = tests
     }

@@ -8,7 +8,8 @@ import GHC.Generics (Generic)
 import Language (Language)
 
 data Task = Task
-  { expectedFilename :: String
+  { name :: String
+  , expectedFilename :: String
     -- ^ every test is expected to have some \"expected import\", usually the source file being tested
     -- this is our current mechanism for plugging a student's source file into the test
   , language :: Language

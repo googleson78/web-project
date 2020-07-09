@@ -28,6 +28,7 @@ User
   deriving Show
 
 Task
+  name String
   expectedFilename String
   language Language
   tests Text
