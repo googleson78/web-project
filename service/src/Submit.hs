@@ -49,7 +49,9 @@ runTests Task {language, tests, expectedFilename} program =
       Text.writeFile "tests" tests
       Text.writeFile expectedFilename $ getProgram program
 
-    (exitCode, (decodeOutput -> stdout), (decodeOutput -> stderr)) <- readProcess $ proc "racket" ["tests"]
+    (exitCode, (decodeOutput -> stdout), (decodeOutput -> stderr)) <-
+      case language of
+        Racket -> readProcess $ proc "racket" ["tests"]
 
     case exitCode of
       ExitFailure _ -> pure Nothing
