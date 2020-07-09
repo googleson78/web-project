@@ -10,6 +10,7 @@ RUN raco pkg install --auto quickcheck
 # allow people to log in as root
 RUN sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
 RUN echo "root:asdf" | chpasswd
+RUN mysql -e "CREATE USER 'newuser'@'localhost' IDENTIFIED BY 'asdf'; GRANT ALL PRIVILEGES ON * . * TO 'newuser'@'localhost'; FLUSH PRIVILEGES;"
 
 RUN service mysql start && echo 'create database db' | mysql
 
