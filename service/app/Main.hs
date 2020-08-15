@@ -31,9 +31,8 @@ main = do
   where
     runServer :: Pool SqlBackend -> ReaderT App Handler a -> Handler a
     runServer pool act = do
-      poolMVar <- liftIO $ newMVar pool
       tokensMVar <- liftIO $ newMVar Map.empty
-      runReaderT act $ App poolMVar tokensMVar
+      runReaderT act $ App pool tokensMVar
 
 connectInfo :: ConnectInfo
 connectInfo =

@@ -18,13 +18,13 @@ import User (User)
 import qualified Data.HashMap.Strict as Map
 
 data App = App
-  { db :: MVar (Pool SqlBackend)
+  { db :: Pool SqlBackend
   , tokens :: MVar (HashMap Token User)
   }
 
 runQuery :: (MonadIO m, MonadReader App m) => ReaderT SqlBackend IO a -> m a
 runQuery query = do
-  pool <- liftIO . readMVar . db =<< ask
+  pool <- db <$> ask
   liftIO $ runSqlPool query pool
 
 getUser :: (MonadIO m, MonadReader App m) => Token -> m (Maybe User)
