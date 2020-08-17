@@ -10,9 +10,12 @@ dependencies:
 - base >= 4.7 && < 5
 - aeson
 - bytestring
+- cryptonite
 - esqueleto
 - exceptions
 - generic-lens
+- hashable
+- memory
 - microlens
 - monad-logger
 - mtl
@@ -29,6 +32,7 @@ dependencies:
 - transformers
 - typed-process
 - unliftio-core
+- unordered-containers
 - warp
 
 default-extensions:

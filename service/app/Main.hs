@@ -20,6 +20,7 @@ import Db.Schema (migrateAll)
 import Database.Persist.Sql (runMigration)
 import Control.Monad.Logger (NoLoggingT(..), runNoLoggingT)
 import Database.MySQL.Base (defaultConnectInfo)
+import qualified Data.HashMap.Strict as Map
 
 main :: IO ()
 main = do
@@ -30,8 +31,8 @@ main = do
   where
     runServer :: Pool SqlBackend -> ReaderT App Handler a -> Handler a
     runServer pool act = do
-      poolMVar <- liftIO $ newMVar pool
-      runReaderT act $ App poolMVar
+      tokensMVar <- liftIO $ newMVar Map.empty
+      runReaderT act $ App pool tokensMVar
 
 connectInfo :: ConnectInfo
 connectInfo =

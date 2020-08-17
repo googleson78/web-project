@@ -1,3 +1,4 @@
+{-# LANGUAGE ViewPatterns #-}
 {-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE BlockArguments #-}
 {-# LANGUAGE OverloadedLabels #-}
@@ -7,47 +8,40 @@ module Handler
   ( apiHandler
   ) where
 
-import API (GetTasks, AddTask, Submit, API, Register, Lookup)
-import App (runQuery, App)
+import API (GetTasks, AddTask, Submit, API, Login)
+import App (registerNewToken, App, runQuery)
 import Control.Monad.Catch (MonadMask)
 import Control.Monad.Except (MonadError)
 import Control.Monad.IO.Class (MonadIO)
 import Control.Monad.Reader.Class (MonadReader)
-import Data.Functor (void)
 import Data.Generics.Labels ()
 import Database.Esqueleto
 import Lens.Micro.Extras (view)
 import Prelude hiding (lookup)
-import Servant (ServerT)
+import Servant (err401, ServerT)
 import Servant (err404)
 import Servant (err500, ServerError(..), throwError, (:<|>)(..))
 import Task (Task)
-import Servant.API (NoContent(..))
 import Submit (runTests)
 import qualified Database.Persist as Persistent
 import qualified Db.Schema as Db
 import qualified Db.Task as Db
-import qualified Db.User as Db
 
 apiHandler :: (MonadMask m, MonadError ServerError m, MonadIO m, MonadReader App m) => ServerT API m
 apiHandler =
-  register :<|>
-  lookup :<|>
+  login :<|>
   getTasks :<|>
   addTask :<|>
   submit
 
-register :: (MonadIO m, MonadReader App m) => ServerT Register m
-register user = do
-  void $ runQuery $ Persistent.insert $ Db.fromUser user
-  pure NoContent
-
-lookup :: (MonadError ServerError m, MonadIO m, MonadReader App m) => ServerT Lookup m
-lookup name = do
-  found <- runQuery $ getBy $ Db.UniqueUsername name
+login :: (MonadError ServerError m, MonadIO m, MonadReader App m) => ServerT Login m
+login user = do
+  found <- runQuery $ getBy $ Db.UniqueUsername $ view #name user
   case found of
-    Nothing -> throwError $ err404
-    Just user -> pure $ Db.toUser $ entityVal user
+    Nothing -> throwError err401
+    Just (entityVal -> dbUser)
+      | Db.userPassword dbUser == view #password user -> registerNewToken user
+      | otherwise -> throwError err401
 
 getTasks :: (MonadIO m, MonadReader App m) => ServerT GetTasks m
 getTasks = fmap (map convert) $ runQuery $ select $ from pure

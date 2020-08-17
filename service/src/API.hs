@@ -3,17 +3,17 @@
 
 module API
   ( API, api
-  , Register, Lookup
+  , Login
   , AddTask, GetTasks
   , Submit
   ) where
 
-import Data.Text (Text)
-import Servant
-import User (User)
-import Task (Task)
-import Submit (Submission, Result)
 import Db.Schema (TaskId)
+import Servant
+import Submit (Submission, Result)
+import Task (Task)
+import Token (Token)
+import User (User)
 
 api :: Proxy API
 api = Proxy
@@ -22,15 +22,12 @@ api = Proxy
 type API = "api" :> API'
 
 type API' =
-  Register :<|>
-  Lookup :<|>
+  Login :<|>
   GetTasks :<|>
   AddTask :<|>
   Submit
 
-type Register = "user" :> ReqBody '[JSON] User :> PostNoContent
-
-type Lookup = "user" :> Capture "name" Text :> Get '[JSON] User
+type Login = "login" :> ReqBody '[JSON] User :> Post '[PlainText] Token
 
 type GetTasks = "task" :> Get '[JSON] [(TaskId, Task)]
 
