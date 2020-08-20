@@ -1,132 +1,127 @@
 <?php
+// For Debug. TODO: Add debug mode?
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 require_once 'db-config.php';
 
-$username = $password = $confirm_password = '';
-$username_err = $password_err = $confirm_password_err = '';
+$error_message = '';
+$success_message = '';
 
-echo " : ";
+// Register user
+if (isset($_POST['btnsignup'])) {
+    $username = trim($_POST['uname']);
+    $password = trim($_POST['password']);
+    $confirmpassword = trim($_POST['confirmpassword']);
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // if (empty(trim($_POST['username']))) {
-    //     $username_err = 'Please enter a username.';
-    // } else {
-    //     $sql = 'SELECT id FROM user WHERE username = ?';
+    $isValid = true;
 
-    //     if ($stmt = mysqli_prepare($link, $sql)) {
-    //         mysqli_stmt_bind_param($stmt, 's', $param_username);
+    // Check fields are empty or not
+    if (
+        $username == '' ||
+        $password == '' ||
+        $confirmpassword == ''
+    ) {
+        $isValid = false;
+        $error_message = 'Please fill all fields.';
+    }
 
-    //         $param_username = trim($_POST['username']);
+    // Check if confirm password matching or not
+    if ($isValid && $password != $confirmpassword) {
+        $isValid = false;
+        $error_message = 'Confirm password not matching';
+    }
 
-    //         if (mysqli_stmt_execute($stmt)) {
-    //             mysqli_stmt_store_result($stmt);
-
-    //             if (mysqli_stmt_num_rows($stmt) == 1) {
-    //                 $username_err = 'This username is already taken.';
-    //             } else {
-                    $username = trim($_POST['username']);
-    //             }
-    //         } else {
-    //             echo 'Oops! Something went wrong. Please try again later.';
-    //         }
-    //         mysqli_stmt_close($stmt);
-    //     }
-    // }
-
-    // if (empty(trim($_POST['password']))) {
-    //     $password_err = 'Please enter a password.';
-    // } elseif (strlen(trim($_POST['password'])) < 6) {
-    //     $password_err = 'Password must have atleast 6 characters.';
-    // } else {
-        $password = trim($_POST['password']);
-    // }
-
-    // if (empty(trim($_POST['confirm_password']))) {
-    //     $confirm_password_err = 'Please confirm password.';
-    // } else {
-    //     $confirm_password = trim($_POST['confirm_password']);
-    //     if (empty($password_err) && $password != $confirm_password) {
-    //         $confirm_password_err = 'Password did not match.';
-    //     }
-    // }
-
-    // if (
-    //     empty($username_err) &&
-    //     empty($password_err) &&
-    //     empty($confirm_password_err)
-    // ) {
-        $sql = 'INSERT INTO user (name, password) VALUES (?, ?)';
-
-        if ($stmt = mysqli_prepare($link, $sql)) {
-            mysqli_stmt_bind_param(
-                $stmt,
-                'ss',
-                $param_username,
-                $param_password
-            );
-
-            $param_username = $username;
-            $param_password = password_hash($password, PASSWORD_DEFAULT);
-
-            if (mysqli_stmt_execute($stmt)) {
-                header('location: login.php');
-            } else {
-                echo 'the username is : ' . $param_username;
-                echo 'the password is : ' . $param_password;
-                echo 'Something went wrong. Please try again later.';
-                print_r(mysqli_stmt_error_list($stmt));
-            }
-
-            mysqli_stmt_close($stmt);
+    if ($isValid) {
+        // Check if username already exists
+        $stmt = $conn->prepare('SELECT * FROM user WHERE name = ?');
+        $stmt->bind_param('s', $username);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $stmt->close();
+        if ($result->num_rows > 0) {
+            $isValid = false;
+            $error_message = 'Username is already exists.';
         }
-    // }
+    }
 
-    mysqli_close($link);
+    // Insert records
+    if ($isValid) {
+        $insertSQL =
+            'INSERT INTO user(name,password) values(?,?)';
+        $stmt = $conn->prepare($insertSQL);
+        $stmt->bind_param('ss', $username, $password);
+        $stmt->execute();
+        $stmt->close();
+
+        $success_message = 'Account created successfully.';
+    }
 }
 ?>
 
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Sign Up</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+
+
+    <!-- REMOVE THIS LATER: -->
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <!-- Bootstrap JS -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <!-- shit ends here -->
+
 </head>
 <body>
-    <div class="wrapper">
-        <h2>Sign Up</h2>
-        <p>Please fill this form to create an account.</p>
-        <form action="<?php echo htmlspecialchars(
-            $_SERVER['PHP_SELF']
-        ); ?>" method="post">
-            <div class="form-group <?php echo !empty($username_err)
-                ? 'has-error'
-                : ''; ?>">
-                <label>Username</label>
-                <input type="text" name="username" class="form-control" value="<?php echo $username; ?>">
-                <span class="help-block"><?php echo $username_err; ?></span>
-            </div>
-            <div class="form-group <?php echo !empty($password_err)
-                ? 'has-error'
-                : ''; ?>">
-                <label>Password</label>
-                <input type="password" name="password" class="form-control" value="<?php echo $password; ?>">
-                <span class="help-block"><?php echo $password_err; ?></span>
-            </div>
-            <div class="form-group <?php echo !empty($confirm_password_err)
-                ? 'has-error'
-                : ''; ?>">
-                <label>Confirm Password</label>
-                <input type="password" name="confirm_password" class="form-control" value="<?php echo $confirm_password; ?>">
-                <span class="help-block"><?php echo $confirm_password_err; ?></span>
+    <div class='container'>
+      <div class='row'>
+
+        <div class='col-md-6' >
+
+          <form method='post' action=''>
+
+            <h1>SignUp</h1>
+
+            <?php // Display Error message
+            if (!empty($error_message)) { ?>
+                <div class="alert alert-danger">
+                <strong>Error!</strong> <?= $error_message ?>
+                </div>
+            <?php } ?>
+
+            <?php // Display Success message
+            if (!empty($success_message)) { ?>
+                <div class="alert alert-success">
+                <strong>Success!</strong> <?= $success_message ?>
+                </div>
+            <?php } ?>
+
+            <div class="form-group">
+              <label for="fname">Username:</label>
+              <input type="text" class="form-control" name="uname" id="uname" required="required" maxlength="80">
             </div>
             <div class="form-group">
-                <input type="submit" class="btn btn-primary" value="Submit">
-                <input type="reset" class="btn btn-default" value="Reset">
+              <label for="password">Password:</label>
+              <input type="password" class="form-control" name="password" id="password" required="required" maxlength="80">
             </div>
-            <p>Already have an account? <a href="login.php">Login here</a>.</p>
-        </form>
+            <div class="form-group">
+              <label for="pwd">Confirm Password:</label>
+              <input type="password" class="form-control" name="confirmpassword" id="confirmpassword" onkeyup='' required="required" maxlength="80">
+            </div>
+
+            <button type="submit" name="btnsignup" class="btn btn-default">Submit</button>
+          </form>
+        </div>
+
+     </div>
     </div>
-</body>
+  </body>
 </html>
