@@ -6,6 +6,13 @@ error_reporting(E_ALL);
 
 require_once 'db-config.php';
 
+session_start();
+
+if (isset($_SESSION['loggedin'])) {
+	header('Location: index.php');
+	exit; // is it necessary ?
+}
+
 $error_message = '';
 $success_message = '';
 
@@ -48,6 +55,7 @@ if (isset($_POST['btnsignup'])) {
 
     // Insert records
     if ($isValid) {
+      // TODO: add password excryption
         $insertSQL =
             'INSERT INTO user(name,password) values(?,?)';
         $stmt = $conn->prepare($insertSQL);
@@ -81,6 +89,7 @@ if (isset($_POST['btnsignup'])) {
 
 </head>
 <body>
+  <?php require_once "navbar.php"; ?>
     <div class='container'>
       <div class='row'>
 
