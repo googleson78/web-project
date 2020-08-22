@@ -41,6 +41,18 @@ if (isset($_POST['btnlogin'])) {
             
             if ($_POST['password'] === $password) {
                 session_regenerate_id();
+
+                $req = curl_init("http://localhost:3000/api/login");
+                curl_setopt($req, CURLOPT_POST, TRUE);
+                curl_setopt($req, CURLOPT_POSTFIELDS, json_encode(array("name"=>$username, "password"=>$password)));
+                curl_setopt($req, CURLOPT_HTTPHEADER, array ("Content-Type: application/json"));
+                curl_setopt($req, CURLOPT_HEADER, FALSE);
+                curl_setopt($req, CURLOPT_RETURNTRANSFER, TRUE);
+                $result = curl_exec($req);
+                curl_close($req);
+
+                setcookie("token", $result);
+
                 $_SESSION['loggedin'] = TRUE;
                 $_SESSION['username'] = $username;
                 $_SESSION['id'] = $id;

@@ -1,7 +1,7 @@
 FROM haskell:8.8.3
 
 # last ones are required by persistent-mysql
-RUN apt-get update && apt-get install -y racket ssh nginx php-fpm mariadb-server libpcre3-dev libmariadbclient-dev php-mysqli
+RUN apt-get update && apt-get install -y racket ssh nginx php-fpm php-curl mariadb-server libpcre3-dev libmariadbclient-dev php-mysqli
 
 # install required racket testing libraries
 RUN raco pkg install --auto quickcheck
