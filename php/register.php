@@ -49,13 +49,13 @@ if (isset($_POST['btnsignup'])) {
         $stmt->close();
         if ($result->num_rows > 0) {
             $isValid = false;
-            $error_message = 'Username is already exists.';
+            $error_message = 'This username already exists.';
         }
     }
 
     // Insert records
     if ($isValid) {
-      // TODO: add password excryption
+      // TODO: add password encryption
         $insertSQL =
             'INSERT INTO user(name,password) values(?,?)';
         $stmt = $conn->prepare($insertSQL);

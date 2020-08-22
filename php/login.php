@@ -60,10 +60,10 @@ if (isset($_POST['btnlogin'])) {
                 $success_message = "Welcome " . $username . "! :)";
                 header('Location: index.php');
             } else {
-                $error_message = "incorect password!";
+                $error_message = "incorrect password!";
             }
         } else {
-            $error_message = "incorect username!";
+            $error_message = "incorrect username!";
         }
 
         $stmt->close();
