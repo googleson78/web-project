@@ -11,8 +11,8 @@ function addTask() {
   postApiTask(
     '',
     task,
-    (id) => alert(id),
-    (err) => alert(err),
+    (id) => {},
+    (err) => console.log(err),
   )
 }
 
