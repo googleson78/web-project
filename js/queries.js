@@ -1,75 +1,65 @@
-const getApiTask = function (backendUrl, onSuccess, onError) {
-  let xhr = new XMLHttpRequest()
-  xhr.open('GET', backendUrl + '/api/task', true)
-  xhr.setRequestHeader('Accept', 'application/json')
+var getApiTask = function(onSuccess, onError) {
+  var xhr = new XMLHttpRequest();
+  xhr.open('GET', '/api/task', true);
+  xhr.setRequestHeader('Accept', 'application/json');
   xhr.onreadystatechange = function () {
-    let res = null
+    var res = null;
     if (xhr.readyState === 4) {
       if (xhr.status === 204 || xhr.status === 205) {
-        onSuccess()
+        onSuccess();
       } else if (xhr.status >= 200 && xhr.status < 300) {
-        try {
-          res = JSON.parse(xhr.responseText)
-        } catch (e) {
-          onError(e)
-        }
-        if (res) onSuccess(res)
+        try { res = JSON.parse(xhr.responseText); } catch (e) { onError(e); }
+        if (res) onSuccess(res);
       } else {
         if (xhr.responseText) onError(xhr.responseText)
       }
     }
-  }
-  xhr.send(null)
-}
+  };
+  xhr.send(null);
+};
 
-const postApiTask = function (backendUrl, body, onSuccess, onError) {
-  let xhr = new XMLHttpRequest()
-  xhr.open('POST', backendUrl + '/api/task', true)
-  xhr.setRequestHeader('Accept', 'application/json')
-  xhr.setRequestHeader('Content-Type', 'application/json')
+var postApiTask = function(body, onSuccess, onError) {
+  var xhr = new XMLHttpRequest();
+  xhr.open('POST', '/api/task', true);
+  xhr.withCredentials = true;
+  xhr.setRequestHeader('Accept', 'application/json');
+  xhr.setRequestHeader('Content-Type', 'application/json');
   xhr.onreadystatechange = function () {
-    let res = null
+    var res = null;
     if (xhr.readyState === 4) {
       if (xhr.status === 204 || xhr.status === 205) {
-        onSuccess()
+        onSuccess();
       } else if (xhr.status >= 200 && xhr.status < 300) {
-        try {
-          res = JSON.parse(xhr.responseText)
-        } catch (e) {
-          onError(e)
-        }
-        if (res) onSuccess(res)
+        try { res = JSON.parse(xhr.responseText); } catch (e) { onError(e); }
+        if (res) onSuccess(res);
       } else {
         if (xhr.responseText) onError(xhr.responseText)
       }
     }
-  }
-  xhr.send(JSON.stringify(body))
-}
+  };
+  xhr.send(JSON.stringify(body));
+};
 
-const postApiSubmit = function (backendUrl, body, onSuccess, onError) {
-  let xhr = new XMLHttpRequest()
-  xhr.open('POST', backendUrl + '/api/submit', true)
-  xhr.setRequestHeader('Accept', 'application/json')
-  xhr.setRequestHeader('Content-Type', 'application/json')
+var postApiSubmit = function(body, onSuccess, onError) {
+  var xhr = new XMLHttpRequest();
+  xhr.open('POST', '/api/submit', true);
+  xhr.withCredentials = true;
+  xhr.setRequestHeader('Accept', 'application/json');
+  xhr.setRequestHeader('Content-Type', 'application/json');
   xhr.onreadystatechange = function () {
-    let res = null
+    var res = null;
     if (xhr.readyState === 4) {
       if (xhr.status === 204 || xhr.status === 205) {
-        onSuccess()
+        onSuccess();
       } else if (xhr.status >= 200 && xhr.status < 300) {
-        try {
-          res = JSON.parse(xhr.responseText)
-        } catch (e) {
-          onError(e)
-        }
-        if (res) onSuccess(res)
+        try { res = JSON.parse(xhr.responseText); } catch (e) { onError(e); }
+        if (res) onSuccess(res);
       } else {
         if (xhr.responseText) onError(xhr.responseText)
       }
     }
-  }
-  xhr.send(JSON.stringify(body))
-}
+  };
+  xhr.send(JSON.stringify(body));
+};
 
 export { getApiTask, postApiTask }

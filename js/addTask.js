@@ -9,7 +9,6 @@ function addTask() {
   task.tests = document.getElementById('tests').value
   task.expectedFilename = document.getElementById('expected-filename').value
   postApiTask(
-    '',
     task,
     (id) => document.getElementById('report').innerHTML = "Task successfully added, with an id of " + JSON.stringify(id),
     (err) => document.getElementById('report').innerHTML = "Task adding failed: " + JSON.stringify(err),

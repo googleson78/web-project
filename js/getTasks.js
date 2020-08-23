@@ -36,7 +36,6 @@ function generateHTMLError(err) {
 
 function getTasks() {
   getApiTask(
-    '',
     (tasks) =>
       (document.getElementById('tasks').innerHTML = generateHTMLList(tasks)),
     (err) =>
