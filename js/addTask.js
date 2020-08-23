@@ -5,7 +5,7 @@ function addTask() {
   const task = {}
   task.name = document.getElementById('name').value
   task.description = document.getElementById('description').value
-  task.language = document.getElementById('language').value // TODO: CHANGE WHEN MORE LANGUAGES ARE ADDED!
+  task.language = document.getElementById('language').value
   task.tests = document.getElementById('tests').value
   task.expectedFilename = document.getElementById('expected-filename').value
   postApiTask(
