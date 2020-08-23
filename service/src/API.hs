@@ -8,6 +8,7 @@ module API
   , Submit
   ) where
 
+import Cookies (Cookies)
 import Db.Schema (TaskId)
 import Servant
 import Submit (Submission, Result)
@@ -31,6 +32,8 @@ type Login = "login" :> ReqBody '[JSON] User :> Post '[PlainText] Token
 
 type GetTasks = "task" :> Get '[JSON] [TaskWithId]
 
-type AddTask = "task" :> ReqBody '[JSON] Task :> Post '[JSON] TaskId
+type AddTask = "task" :> WithCookies :> ReqBody '[JSON] Task :> Post '[JSON] TaskId
 
-type Submit = "submit" :> ReqBody '[JSON] Submission :> Post '[JSON] Result
+type Submit = "submit" :> WithCookies :> ReqBody '[JSON] Submission :> Post '[JSON] Result
+
+type WithCookies = Header "Cookie" Cookies
