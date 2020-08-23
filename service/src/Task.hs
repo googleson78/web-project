@@ -18,6 +18,7 @@ data Task = Task
     -- ^ the source code of the test itself
     -- it's expected that the \"expected import\" is already done here
     -- TODO: possible consider manually adding the import
+  , description :: Text
   }
   deriving stock (Eq, Show, Generic)
   deriving anyclass (ToJSON, FromJSON)

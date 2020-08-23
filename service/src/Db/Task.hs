@@ -14,6 +14,7 @@ toTask Db.Task {..} =
     , expectedFilename = taskExpectedFilename
     , language = taskLanguage
     , tests = taskTests
+    , description = taskDescription
     }
 
 fromTask :: Task -> Db.Task
@@ -23,4 +24,5 @@ fromTask Task {..} =
     , taskExpectedFilename = expectedFilename
     , taskLanguage = language
     , taskTests = tests
+    , taskDescription = description
     }

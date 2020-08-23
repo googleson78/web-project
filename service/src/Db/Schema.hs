@@ -32,6 +32,7 @@ Task
   expectedFilename String
   language Language
   tests Text
+  description Text 
 
   deriving Show
 |]
