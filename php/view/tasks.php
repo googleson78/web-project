@@ -38,10 +38,11 @@ session_start();
 <body>
     <?php require_once '../navbar.php'; ?>
 
-    <p>(\x. x x)(\x. x x)</p>
-    <button onclick="getTasks()">Get tasks</button>
+    <div class="container">
+        <div id="tasks">
+    </div>
 
-    <div id="tasks"></div>
+    </div>
 
 </body>
 </html>
