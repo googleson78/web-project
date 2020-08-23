@@ -72,4 +72,4 @@ const postApiSubmit = function (backendUrl, body, onSuccess, onError) {
   xhr.send(JSON.stringify(body))
 }
 
-export { getApiTask }
+export { getApiTask, postApiTask }

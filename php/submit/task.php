@@ -16,7 +16,7 @@ session_start();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>View Tasks</title>
+    <title>Add task</title>
 
 
     <!-- REMOVE THIS LATER: -->
@@ -30,18 +30,53 @@ session_start();
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
     <!-- shit ends here -->
 
-    <!-- <script type="module" src="getTasks.js"></script> -->
-    
-    <script type="module" src="../getTasks.js"></script>
+    <script type="module" src="../addTask.js"></script>
 
 </head>
 <body>
     <?php require_once '../navbar.php'; ?>
 
-    <p>(\x. x x)(\x. x x)</p>
-    <button onclick="getTasks()">Get tasks</button>
 
-    <div id="tasks"></div>
+    <div class="container">
+      <form action="javascript:;" onsubmit="addTask()">
+        <div class="form-group">
+          <label>Task name
+            <input class="form-control" name="name" id="name" required></input>
+          </label>
+        </div>
+
+        <div class="form-group">
+          <label>Task description
+            <input class="form-control" name="description" id="description" required></input>
+          </label>
+        </div>
+
+        <div class="form-group">
+          <label>Expected filename for task solution - tests are expected to "import" this file
+            <input class="form-control" name="expected-filename" id="expected-filename" required></input>
+          </label>
+        </div>
+
+        <div class="form-group">
+          <label>Task programming language
+            <select class="form-control" name="language" id="language">
+              <option value="Racket">Racket</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="form-group">
+          <label>Tests code
+            <textarea class="form-control" rows="6" cols="80" name="tests" id="tests" required></textarea>
+          </label>
+        </div>
+
+        <div class="form-group">
+          <input type="submit" value="Submit">
+        </div>
+      </form>
+      <div id="report"></div>
+    </div>
 
 </body>
 </html>
