@@ -11,7 +11,7 @@ module API
 import Db.Schema (TaskId)
 import Servant
 import Submit (Submission, Result)
-import Task (Task)
+import Task (Task, TaskWithId)
 import Token (Token)
 import User (User)
 
@@ -29,7 +29,7 @@ type API' =
 
 type Login = "login" :> ReqBody '[JSON] User :> Post '[PlainText] Token
 
-type GetTasks = "task" :> Get '[JSON] [(TaskId, Task)]
+type GetTasks = "task" :> Get '[JSON] [TaskWithId]
 
 type AddTask = "task" :> ReqBody '[JSON] Task :> Post '[JSON] TaskId
 

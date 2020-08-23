@@ -21,7 +21,7 @@ import Prelude hiding (lookup)
 import Servant (err401, ServerT)
 import Servant (err404)
 import Servant (err500, ServerError(..), throwError, (:<|>)(..))
-import Task (Task)
+import Task (TaskWithId(..))
 import Submit (runTests)
 import qualified Database.Persist as Persistent
 import qualified Db.Schema as Db
@@ -46,8 +46,8 @@ login user = do
 getTasks :: (MonadIO m, MonadReader App m) => ServerT GetTasks m
 getTasks = fmap (map convert) $ runQuery $ select $ from pure
   where
-    convert :: Entity Db.Task -> (Db.TaskId, Task)
-    convert Entity {entityKey, entityVal} = (entityKey, Db.toTask entityVal)
+    convert :: Entity Db.Task -> TaskWithId
+    convert Entity {entityKey, entityVal} = TaskWithId entityKey $ Db.toTask entityVal
 
 
 addTask :: (MonadIO m, MonadReader App m) => ServerT AddTask m

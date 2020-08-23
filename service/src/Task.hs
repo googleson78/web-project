@@ -1,11 +1,13 @@
 module Task
   ( Task (..)
+  , TaskWithId(..)
   ) where
 
 import Data.Aeson (ToJSON, FromJSON)
 import Data.Text (Text)
 import GHC.Generics (Generic)
 import Language (Language)
+import Db.Schema (TaskId)
 
 data Task = Task
   { name :: String
@@ -19,6 +21,13 @@ data Task = Task
     -- it's expected that the \"expected import\" is already done here
     -- TODO: possible consider manually adding the import
   , description :: Text
+  }
+  deriving stock (Eq, Show, Generic)
+  deriving anyclass (ToJSON, FromJSON)
+
+data TaskWithId = TaskWithId
+  { taskId :: TaskId
+  , task :: Task
   }
   deriving stock (Eq, Show, Generic)
   deriving anyclass (ToJSON, FromJSON)
