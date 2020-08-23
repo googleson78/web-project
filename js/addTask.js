@@ -11,8 +11,8 @@ function addTask() {
   postApiTask(
     '',
     task,
-    (id) => {},
-    (err) => console.log(err),
+    (id) => document.getElementById('report').innerHTML = "Task successfully added, with an id of " + JSON.stringify(id),
+    (err) => document.getElementById('report').innerHTML = "Task adding failed: " + JSON.stringify(err),
   )
 }
 

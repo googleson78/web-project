@@ -75,6 +75,7 @@ session_start();
           <input type="submit" value="Submit">
         </div>
       </form>
+      <div id="report"></div>
     </div>
 
 </body>
