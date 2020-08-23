@@ -1,7 +1,5 @@
 import { getApiTask } from './queries.js'
 
-alert('This alert box was called with the onload event')
-
 function getTasks() {
   getApiTask(
     '',
