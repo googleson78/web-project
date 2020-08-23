@@ -2,16 +2,25 @@ import { getApiTask } from './queries.js'
 
 function generateHTMLList(tasks) {
   let res = ''
-  for (let item of tasks) {
-    const task = item.task
-    res += `
-      <div class="panel panel-default">
-        <div class="panel-heading"><a href="#">${task.name}</a></div>
-        <div class="panel-body">
-          <p>Language: ${task.language}</p>
-          <p>Description: ${task.description}</p>
-        </div>
-      </div>`
+  if (tasks.length > 0) {
+    for (let item of tasks) {
+      const task = item.task
+      res += `
+        <div class="panel panel-default">
+          <div class="panel-heading"><a href="#">${task.name}</a></div>
+          <div class="panel-body">
+            <p>Language: ${task.language}</p>
+            <p>Description: ${task.description}</p>
+          </div>
+        </div>`
+    }
+  } else {
+    res = `<div class="panel panel-default">
+            <div class="panel-heading">No new tasks :(</div>
+            <div class="panel-body">
+              later someone may upload one
+            </div>
+          </div>`
   }
   return res
 }
