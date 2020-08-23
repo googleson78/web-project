@@ -31,3 +31,8 @@ You'll need `libpcre3-dev` + `libmariadbclient-dev` (this is what they're called
 
 This build is in place so that you can easily run a "dev" server afterwards, refer to [Running](#Running).
 Building it on your machine might cause a `libc` mismatch between what is in the "deploy" image.
+
+## Modifications to js query functions
+
+Since servant doesn't return json-encoded values for errors (it's plaintext) the js functions need to be modified not to attempt
+to parse the error body as json.

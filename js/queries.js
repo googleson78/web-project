@@ -15,12 +15,7 @@ const getApiTask = function (backendUrl, onSuccess, onError) {
         }
         if (res) onSuccess(res)
       } else {
-        try {
-          res = JSON.parse(xhr.responseText)
-        } catch (e) {
-          onError(e)
-        }
-        if (res) onError(res)
+        if (xhr.responseText) onError(xhr.responseText)
       }
     }
   }
@@ -45,12 +40,7 @@ const postApiTask = function (backendUrl, body, onSuccess, onError) {
         }
         if (res) onSuccess(res)
       } else {
-        try {
-          res = JSON.parse(xhr.responseText)
-        } catch (e) {
-          onError(e)
-        }
-        if (res) onError(res)
+        if (xhr.responseText) onError(xhr.responseText)
       }
     }
   }
@@ -75,12 +65,7 @@ const postApiSubmit = function (backendUrl, body, onSuccess, onError) {
         }
         if (res) onSuccess(res)
       } else {
-        try {
-          res = JSON.parse(xhr.responseText)
-        } catch (e) {
-          onError(e)
-        }
-        if (res) onError(res)
+        if (xhr.responseText) onError(xhr.responseText)
       }
     }
   }
