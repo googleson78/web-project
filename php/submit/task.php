@@ -41,19 +41,19 @@ session_start();
       <form action="javascript:;" onsubmit="addTask()">
         <div class="form-group">
           <label>Task name
-            <input class="form-control" name="name" id="name"></input>
+            <input class="form-control" name="name" id="name" required></input>
           </label>
         </div>
 
         <div class="form-group">
           <label>Task description
-            <input class="form-control" name="description" id="description"></input>
+            <input class="form-control" name="description" id="description" required></input>
           </label>
         </div>
 
         <div class="form-group">
           <label>Expected filename for task solution - tests are expected to "import" this file
-            <input class="form-control" name="expected-filename" id="expected-filename"></input>
+            <input class="form-control" name="expected-filename" id="expected-filename" required></input>
           </label>
         </div>
 
@@ -67,7 +67,7 @@ session_start();
 
         <div class="form-group">
           <label>Tests code
-            <textarea class="form-control" rows="6" cols="80" name="tests" id="tests"></textarea>
+            <textarea class="form-control" rows="6" cols="80" name="tests" id="tests" required></textarea>
           </label>
         </div>
 
