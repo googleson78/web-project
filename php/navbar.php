@@ -15,12 +15,17 @@
 		<!-- Collapsible Navbar -->
 		<div class="collapse navbar-collapse" id="example-1">
 			<ul class="nav navbar-nav">
+				<!-- TODO: show only when logged in -->
+				<li><a href="/view/tasks.php">view tasks</a></li>
+				<li><a href="/submit/problem.php">submit problem</a></li>
+				<li><a href="/submit/task.php">submit task</a></li>
+
                 <?php if (isset($_SESSION['loggedin'])) {?>
-				    <li><a href="index.php">home</a></li>
-				    <li><a href="logout.php">logout</a></li>
+				    <li><a href="/index.php">home</a></li>
+				    <li><a href="/logout.php">logout</a></li>
                 <?php } else { ?>
-                    <li><a href="login.php">login</a></li>
-                    <li><a href="register.php">register</a></li>
+                    <li><a href="/login.php">login</a></li>
+                    <li><a href="/register.php">register</a></li>
                 <?php } ?>
 			</ul>
 		</div>
