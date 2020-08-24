@@ -4,7 +4,7 @@
 
 module Submit
   ( Submission (..), Program (..)
-  , Result (..)
+  , Result (..), ProgramWithResult (..)
   , runTests
   ) where
 
@@ -23,9 +23,7 @@ import qualified Data.ByteString.Lazy as LBS (toStrict)
 import Control.Monad.Catch (MonadMask)
 import System.Process.Typed (proc, readProcess)
 import System.Exit (ExitCode(..))
-
-newtype Program = Program {getProgram :: Text}
-  deriving newtype (FromJSON, ToJSON)
+import Program (Program(..))
 
 data Submission = Submission
   { task :: Db.TaskId
@@ -38,6 +36,13 @@ data Result = Result
   { passed :: Bool
   , resultOutput :: Text
   , resultError :: Text
+  }
+  deriving stock Generic
+  deriving anyclass (ToJSON, FromJSON)
+
+data ProgramWithResult = ProgramWithResult
+  { program :: Program
+  , result :: Result
   }
   deriving stock Generic
   deriving anyclass (ToJSON, FromJSON)

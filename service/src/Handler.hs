@@ -27,8 +27,10 @@ import Submit (runTests)
 import Task (TaskWithId(..))
 import User (User)
 import qualified Database.Persist as Persistent
+import qualified Db.Result as Db
 import qualified Db.Schema as Db
 import qualified Db.Task as Db
+import Data.Functor (void)
 
 apiHandler :: (MonadMask m, MonadError ServerError m, MonadIO m, MonadReader App m) => ServerT API m
 apiHandler =
@@ -56,14 +58,24 @@ getTasks = fmap (map convert) $ runQuery $ select $ from pure
 addTask :: (MonadIO m, MonadError ServerError m, MonadReader App m) => ServerT AddTask m
 addTask cookies task = withUser cookies \_ -> runQuery . Persistent.insert . Db.fromTask $ task
 
--- TODO: associate submissions with users
 submit :: (MonadMask m, MonadIO m, MonadError ServerError m, MonadReader App m) => ServerT Submit m
 submit cookies submission =
-  withUser cookies \_ -> do
-    mtask <- runQuery $ Persistent.get $ view #task submission
+  withUser cookies \user -> do
+    let taskId = view #task submission
+
+    mtask <- runQuery $ Persistent.get taskId
     case mtask of
       Nothing -> throwError $ err404 {errBody = "There is no such task."}
-      Just task -> maybe (throwError err500) pure =<< runTests (Db.toTask task) (view #code submission)
+      Just task -> do
+        let program = view #code submission
+
+        result <- maybe (throwError err500) pure =<< runTests (Db.toTask task) program
+        userEntity <- runQuery $ getBy $ Db.UniqueUsername $ view #name user
+        case userEntity of
+          Nothing -> throwError err401 -- shouldn't be possible, we just looked up this user in our users map
+          Just (entityKey -> userId) -> do
+            void $ runQuery $ Persistent.insert $ Db.fromProgramResult userId taskId program result
+            pure result
 
 withUser :: (MonadIO m, MonadError ServerError m, MonadReader App m) => Maybe Cookies -> (User -> m a) -> m a
 withUser cookies f =
