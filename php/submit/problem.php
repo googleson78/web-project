@@ -30,8 +30,6 @@ session_start();
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
     <!-- shit ends here -->
 
-    <!-- <script type="module" src="getTasks.js"></script> -->
-
     <script type="module" src="../submitProblem.js"></script>
 
 </head>
