@@ -9,7 +9,7 @@ module Handler
   ( apiHandler
   ) where
 
-import API (GetTasks, GetTask, AddTask, Submit, API, Login)
+import API (GetSubmissions, GetTasks, GetTask, AddTask, Submit, API, Login)
 import App (getUser, registerNewToken, App, runQuery)
 import Control.Monad.Catch (MonadMask)
 import Control.Monad.Except (MonadError)
@@ -38,7 +38,8 @@ apiHandler =
   getTasks :<|>
   getTask :<|>
   addTask :<|>
-  submit
+  submit :<|>
+  getSubmissions
 
 login :: (MonadError ServerError m, MonadIO m, MonadReader App m) => ServerT Login m
 login user = do
@@ -85,6 +86,19 @@ submit cookies submission =
           Just (entityKey -> userId) -> do
             void $ runQuery $ Persistent.insert $ Db.fromProgramResult userId taskId program result
             pure result
+
+getSubmissions :: (MonadIO m, MonadError ServerError m, MonadReader App m) => ServerT GetSubmissions m
+getSubmissions cookies taskId =
+  withUser cookies \user -> do
+    userEntity <- runQuery $ getBy $ Db.UniqueUsername $ view #name user
+    case userEntity  of
+      Nothing -> throwError err401
+      Just (entityKey -> userId) -> do
+        fmap (map (Db.toProgramWithResult . entityVal)) $ runQuery $ select $ from \result -> do
+          where_ $ result ^. Db.ResultUser ==. val userId
+          where_ $ result ^. Db.ResultTask ==. val taskId
+
+          pure result
 
 withUser :: (MonadIO m, MonadError ServerError m, MonadReader App m) => Maybe Cookies -> (User -> m a) -> m a
 withUser cookies f =
