@@ -29,7 +29,7 @@ function getTask() {
 
 function submitTask() {
     let code = document.getElementById("problem").value;
-    postApiSubmit({task: +taskID,code: code}, (data) => document.getElementById("results").innerHTML = data, err => document.getElementById("results").innerHTML = err);
+    postApiSubmit({task: +taskID,code: code}, (data) => document.getElementById("results").innerHTML = JSON.stringify(data), err => document.getElementById("results").innerHTML = err);
 }
 
 getTask();
