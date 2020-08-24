@@ -23,6 +23,7 @@ import qualified Data.ByteString.Lazy as LBS (toStrict)
 import Control.Monad.Catch (MonadMask)
 import System.Process.Typed (proc, readProcess)
 import Program (Program(..))
+import System.Exit (ExitCode(ExitSuccess))
 
 data Submission = Submission
   { task :: Db.TaskId
@@ -53,13 +54,13 @@ runTests Task {language, tests, expectedFilename} program =
       Text.writeFile "tests" tests
       Text.writeFile expectedFilename $ getProgram program
 
-    (_, (decodeOutput -> stdout), (decodeOutput -> stderr)) <-
+    (exitCode, (decodeOutput -> stdout), (decodeOutput -> stderr)) <-
       case language of
         Racket -> readProcess $ proc "racket" ["tests"]
 
     pure $ Just $
       Result
-        { passed = not (containsFailure language stdout) && not (containsFailure language stderr)
+        { passed = exitCode == ExitSuccess && not (containsFailure language stdout) && not (containsFailure language stderr)
         , resultOutput = stdout
         , resultError = stderr
         }
