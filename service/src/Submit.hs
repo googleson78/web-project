@@ -22,7 +22,6 @@ import Path.IO (withCurrentDir, withSystemTempDir)
 import qualified Data.ByteString.Lazy as LBS (toStrict)
 import Control.Monad.Catch (MonadMask)
 import System.Process.Typed (proc, readProcess)
-import System.Exit (ExitCode(..))
 
 newtype Program = Program {getProgram :: Text}
   deriving newtype (FromJSON, ToJSON)
@@ -49,19 +48,16 @@ runTests Task {language, tests, expectedFilename} program =
       Text.writeFile "tests" tests
       Text.writeFile expectedFilename $ getProgram program
 
-    (exitCode, (decodeOutput -> stdout), (decodeOutput -> stderr)) <-
+    (_, (decodeOutput -> stdout), (decodeOutput -> stderr)) <-
       case language of
         Racket -> readProcess $ proc "racket" ["tests"]
 
-    case exitCode of
-      ExitFailure _ -> pure Nothing
-      ExitSuccess ->
-        pure $ Just $
-          Result
-            { passed = not (containsFailure language stdout) && not (containsFailure language stderr)
-            , resultOutput = stdout
-            , resultError = stderr
-            }
+    pure $ Just $
+      Result
+        { passed = not (containsFailure language stdout) && not (containsFailure language stderr)
+        , resultOutput = stdout
+        , resultError = stderr
+        }
   where
     decodeOutput = Text.decodeUtf8 . LBS.toStrict
 
