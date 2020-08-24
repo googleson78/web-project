@@ -32,16 +32,30 @@ session_start();
 
     <!-- <script type="module" src="getTasks.js"></script> -->
     
-    <script type="module" src="../getTasks.js"></script>
+    <script type="module" src="../submitProblem.js"></script>
 
 </head>
 <body>
     <?php require_once '../navbar.php'; ?>
 
-    <p>(\x. x x)(\x. x x)</p>
-    <button onclick="getTasks()">Get tasks</button>
+    <div class="container">
+        <div id="submission">
+        <form action="javascript:;" onsubmit="submitTask()">
 
-    <div id="tasks"></div>
+            <div class="form-group">
+            <label>Solution code
+                <textarea class="form-control" rows="6" cols="80" name="problem" id="problem" required></textarea>
+            </label>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Submit" class="btn btn-primary">
+            </div>
+        </form>
+        </div>
+        <div id="results"></div>
+        <div id="task"></div>
+    </div>
 
 </body>
 </html>
