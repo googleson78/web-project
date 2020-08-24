@@ -82,4 +82,4 @@ var postApiSubmit = function(body, onSuccess, onError) {
   xhr.send(JSON.stringify(body));
 };
 
-export { getApiTask, postApiTask }
+export { getApiTask, postApiTask, getApiTasks, postApiSubmit }

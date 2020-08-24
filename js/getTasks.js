@@ -1,4 +1,4 @@
-import { getApiTask } from './queries.js'
+import { getApiTasks } from './queries.js'
 
 function generateHTMLList(tasks) {
   let res = ''
