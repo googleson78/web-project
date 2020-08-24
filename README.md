@@ -37,4 +37,5 @@ Building it on your machine might cause a `libc` mismatch between what is in the
 Since servant doesn't return json-encoded values for errors (it's plaintext) the js functions need to be modified not to attempt
 to parse the error body as json.
 
-`xhr.withCredentials = true;` should be set for the `XMLHttpRequest`s so that cookies are sent.
+`xhr.withCredentials = true;` should be set for the `XMLHttpRequest`s so that cookies are sent. The `cookieHeader` argument should be deleted,
+since `xhr.withCredentials = true` means that they will be sent automatically.

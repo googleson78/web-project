@@ -10,6 +10,7 @@ if (!isset($_SESSION['loggedin'])) {
     header('Location: /login.php');
     exit();
 }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -30,30 +31,16 @@ if (!isset($_SESSION['loggedin'])) {
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
     <!-- shit ends here -->
 
-    <script type="module" src="../submitProblem.js"></script>
+    <script type="module" src="../getSubmissions.js"></script>
 
 </head>
 <body>
     <?php require_once '../navbar.php'; ?>
 
     <div class="container">
-        <div id="submission">
-        <form action="javascript:;" onsubmit="submitTask()">
+        <div id="submissions">
+    </div>
 
-            <div class="form-group">
-            <label>Solution code
-                <textarea class="form-control" rows="6" cols="80" name="problem" id="problem" required></textarea>
-            </label>
-            </div>
-
-            <div class="form-group">
-                <input type="submit" value="Submit" class="btn btn-primary">
-            </div>
-        </form>
-        </div>
-        <div id="task"></div>
-        <pre class="invisible" id="output"></pre>
-        <pre class="invisible" id="errors"></pre>
     </div>
 
 </body>

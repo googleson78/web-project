@@ -1,4 +1,4 @@
-import { getApiTask } from './queries.js'
+import { getApiTasks } from './queries.js'
 
 function generateHTMLList(tasks) {
   let res = ''
@@ -7,7 +7,10 @@ function generateHTMLList(tasks) {
       const task = item.task
       res += `
         <div class="panel panel-default">
-          <div class="panel-heading"><a href="#">${task.name}</a></div>
+          <div class="panel-heading">
+            <a href="/submit/problem.php?taskID=${item.taskId}">${task.name}</a>
+            <a href="/view/my-submissions.php?taskID=${item.taskId}">my submissions</a>
+          </div>
           <div class="panel-body">
             <p>Language: ${task.language}</p>
             <p>Description: ${task.description}</p>
@@ -35,7 +38,7 @@ function generateHTMLError(err) {
 }
 
 function getTasks() {
-  getApiTask(
+  getApiTasks(
     (tasks) =>
       (document.getElementById('tasks').innerHTML = generateHTMLList(tasks)),
     (err) =>

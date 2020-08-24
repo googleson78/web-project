@@ -6,10 +6,11 @@ error_reporting(E_ALL);
 
 session_start();
 
-// if (!isset($_SESSION['loggedin'])) {
-//     header('Location: login.php');
-//     exit();
-// }
+if (!isset($_SESSION['loggedin'])) {
+    header('Location: /login.php');
+    exit();
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -30,8 +31,6 @@ session_start();
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
     <!-- shit ends here -->
 
-    <!-- <script type="module" src="getTasks.js"></script> -->
-    
     <script type="module" src="../getTasks.js"></script>
 
 </head>

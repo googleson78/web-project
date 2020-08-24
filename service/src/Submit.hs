@@ -4,7 +4,7 @@
 
 module Submit
   ( Submission (..), Program (..)
-  , Result (..)
+  , Result (..), ProgramWithResult (..)
   , runTests
   ) where
 
@@ -22,10 +22,8 @@ import Path.IO (withCurrentDir, withSystemTempDir)
 import qualified Data.ByteString.Lazy as LBS (toStrict)
 import Control.Monad.Catch (MonadMask)
 import System.Process.Typed (proc, readProcess)
-import System.Exit (ExitCode(..))
-
-newtype Program = Program {getProgram :: Text}
-  deriving newtype (FromJSON, ToJSON)
+import Program (Program(..))
+import System.Exit (ExitCode(ExitSuccess))
 
 data Submission = Submission
   { task :: Db.TaskId
@@ -42,6 +40,13 @@ data Result = Result
   deriving stock Generic
   deriving anyclass (ToJSON, FromJSON)
 
+data ProgramWithResult = ProgramWithResult
+  { program :: Program
+  , result :: Result
+  }
+  deriving stock Generic
+  deriving anyclass (ToJSON, FromJSON)
+
 runTests :: (MonadMask m, MonadIO m) => Task -> Program -> m (Maybe Result)
 runTests Task {language, tests, expectedFilename} program =
   withSystemTempDir "" \dir -> withCurrentDir dir do
@@ -53,15 +58,12 @@ runTests Task {language, tests, expectedFilename} program =
       case language of
         Racket -> readProcess $ proc "racket" ["tests"]
 
-    case exitCode of
-      ExitFailure _ -> pure Nothing
-      ExitSuccess ->
-        pure $ Just $
-          Result
-            { passed = not (containsFailure language stdout) && not (containsFailure language stderr)
-            , resultOutput = stdout
-            , resultError = stderr
-            }
+    pure $ Just $
+      Result
+        { passed = exitCode == ExitSuccess && not (containsFailure language stdout) && not (containsFailure language stderr)
+        , resultOutput = stdout
+        , resultError = stderr
+        }
   where
     decodeOutput = Text.decodeUtf8 . LBS.toStrict
 
