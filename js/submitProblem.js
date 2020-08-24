@@ -32,11 +32,26 @@ function submitTask() {
     postApiSubmit(
       {task: +taskID,code: code},
       (res) => {
-        document.getElementById("output").innerHTML = res.resultOutput
-        document.getElementById("errors").innerHTML = res.resultError
+        if (!isBlank(res.resultOutput)) {
+          document.getElementById("output").className = "visible"
+          document.getElementById("output").innerHTML = res.resultOutput
+        } else {
+          document.getElementById("output").className = "invisible"
+        }
+
+        if (!isBlank(res.resultError)) {
+          document.getElementById("errors").className = "visible"
+          document.getElementById("errors").innerHTML = res.resultError
+        } else {
+          document.getElementById("errors").className = "invisible"
+        }
       },
       (err) => document.getElementById("errors").innerHTML = err
     )
+}
+
+function isBlank(str) {
+    return (!str || /^\s*$/.test(str));
 }
 
 getTask()

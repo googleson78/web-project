@@ -54,8 +54,8 @@ session_start();
         </form>
         </div>
         <div id="task"></div>
-        <pre id="output"></div>
-        <pre id="errors"></div>
+        <pre class="invisible" id="output"></pre>
+        <pre class="invisible" id="errors"></pre>
     </div>
 
 </body>
