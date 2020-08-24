@@ -7,7 +7,10 @@ function generateHTMLList(tasks) {
       const task = item.task
       res += `
         <div class="panel panel-default">
-          <div class="panel-heading"><a href="/submit/problem.php?taskID=${item.taskId}">${task.name}</a></div>
+          <div class="panel-heading">
+            <a href="/submit/problem.php?taskID=${item.taskId}">${task.name}</a>
+            <a href="/view/my-submissions.php?taskID=${item.taskId}">my submissions</a>
+          </div>
           <div class="panel-body">
             <p>Language: ${task.language}</p>
             <p>Description: ${task.description}</p>

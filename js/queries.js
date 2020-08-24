@@ -82,7 +82,7 @@ var postApiSubmit = function(body, onSuccess, onError) {
   xhr.send(JSON.stringify(body));
 };
 
-var getApiSubmissions = function(taskID, headerCookie, onSuccess, onError) {
+var getApiSubmissions = function(taskID, onSuccess, onError) {
   var xhr = new XMLHttpRequest();
   xhr.open('GET', '/api/submissions' + '?taskID=' + encodeURIComponent(taskID), true);
   xhr.withCredentials = true;
