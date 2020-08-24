@@ -31,7 +31,7 @@ session_start();
     <!-- shit ends here -->
 
     <!-- <script type="module" src="getTasks.js"></script> -->
-    
+
     <script type="module" src="../submitProblem.js"></script>
 
 </head>
@@ -53,8 +53,9 @@ session_start();
             </div>
         </form>
         </div>
-        <div id="results"></div>
         <div id="task"></div>
+        <pre id="output"></div>
+        <pre id="errors"></div>
     </div>
 
 </body>

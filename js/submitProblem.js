@@ -8,7 +8,7 @@ function getTask() {
       taskID,
       (task) =>
         (
-        document.getElementById('task').innerHTML = 
+        document.getElementById('task').innerHTML =
             `<div class="panel panel-default">
                 <div class="panel-heading"><a href="#">${task.name}</a></div>
                 <div class="panel-body">
@@ -17,7 +17,7 @@ function getTask() {
                 </div>
             </div>`
     ),
-      (err) => document.getElementById('task').innerHTML = 
+      (err) => document.getElementById('task').innerHTML =
         `<div class="panel panel-danger">
             <div class="panel-heading">An Error Occured</div>
             <div class="panel-body">
@@ -28,13 +28,17 @@ function getTask() {
 }
 
 function submitTask() {
-    let code = document.getElementById("problem").value;
-    postApiSubmit({task: +taskID,code: code}, (data) => document.getElementById("results").innerHTML = JSON.stringify(data), err => document.getElementById("results").innerHTML = err);
+    let code = document.getElementById("problem").value
+    postApiSubmit(
+      {task: +taskID,code: code},
+      (res) => {
+        document.getElementById("output").innerHTML = res.resultOutput
+        document.getElementById("errors").innerHTML = res.resultError
+      },
+      (err) => document.getElementById("errors").innerHTML = err
+    )
 }
 
-getTask();
+getTask()
 
 window.submitTask = submitTask;
-
-
-
