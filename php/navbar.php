@@ -1,6 +1,6 @@
 <nav class="navbar navbar-default">
 	<div class="container-fluid">
-	
+
 		<!-- Brand/logo -->
 		<div class="navbar-header">
 			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#example-1" aria-expanded="false">
@@ -11,13 +11,12 @@
 			</button>
 			<a class="navbar-brand" href="#">The Haskell / FP Religion</a>
 		</div>
-		
+
 		<!-- Collapsible Navbar -->
 		<div class="collapse navbar-collapse" id="example-1">
 			<ul class="nav navbar-nav">
 				<!-- TODO: show only when logged in -->
 				<li><a href="/view/tasks.php">view tasks</a></li>
-				<li><a href="/submit/problem.php">submit problem</a></li>
 				<li><a href="/submit/task.php">submit task</a></li>
 
                 <?php if (isset($_SESSION['loggedin'])) {?>
@@ -29,6 +28,6 @@
                 <?php } ?>
 			</ul>
 		</div>
-	
+
 	</div>
 </nav>
