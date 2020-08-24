@@ -4,7 +4,7 @@
 module API
   ( API, api
   , Login
-  , AddTask, GetTasks
+  , AddTask, GetTasks, GetTask
   , Submit
   ) where
 
@@ -25,12 +25,15 @@ type API = "api" :> API'
 type API' =
   Login :<|>
   GetTasks :<|>
+  GetTask :<|>
   AddTask :<|>
   Submit
 
 type Login = "login" :> ReqBody '[JSON] User :> Post '[PlainText] Token
 
-type GetTasks = "task" :> Get '[JSON] [TaskWithId]
+type GetTasks = "tasks" :> Get '[JSON] [TaskWithId]
+
+type GetTask = "task" :> QueryParam' '[Required, Strict] "taskID" TaskId :> Get '[JSON] Task
 
 type AddTask = "task" :> WithCookies :> ReqBody '[JSON] Task :> Post '[JSON] TaskId
 

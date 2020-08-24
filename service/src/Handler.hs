@@ -9,7 +9,7 @@ module Handler
   ( apiHandler
   ) where
 
-import API (GetTasks, AddTask, Submit, API, Login)
+import API (GetTasks, GetTask, AddTask, Submit, API, Login)
 import App (getUser, registerNewToken, App, runQuery)
 import Control.Monad.Catch (MonadMask)
 import Control.Monad.Except (MonadError)
@@ -34,6 +34,7 @@ apiHandler :: (MonadMask m, MonadError ServerError m, MonadIO m, MonadReader App
 apiHandler =
   login :<|>
   getTasks :<|>
+  getTask :<|>
   addTask :<|>
   submit
 
@@ -51,6 +52,14 @@ getTasks = fmap (map convert) $ runQuery $ select $ from pure
   where
     convert :: Entity Db.Task -> TaskWithId
     convert Entity {entityKey, entityVal} = TaskWithId entityKey $ Db.toTask entityVal
+
+getTask :: (MonadIO m, MonadError ServerError m, MonadReader App m) => ServerT GetTask m
+getTask taskId = do
+  res <- runQuery $ Persistent.get taskId
+  case res of
+    Nothing -> throwError err404
+    Just task -> pure $ Db.toTask task
+
 
 
 addTask :: (MonadIO m, MonadError ServerError m, MonadReader App m) => ServerT AddTask m
