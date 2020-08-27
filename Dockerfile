@@ -14,8 +14,9 @@ RUN echo "root:asdf" | chpasswd
 RUN service mysql start && echo "create database db; CREATE USER 'newuser'@'localhost' IDENTIFIED BY 'asdf'; GRANT ALL PRIVILEGES ON * . * TO 'newuser'@'localhost'; FLUSH PRIVILEGES;" | mysql
 
 COPY service/service-exe /var/www/assessment-service
-COPY php/*.php /var/www/html/
+COPY php/ /var/www/html/
 COPY styles/*.css /var/www/html/styles/
+COPY js/*.js /var/www/html/
 COPY nginx/default /etc/nginx/sites-enabled/default
 
 WORKDIR /var/www/

@@ -26,13 +26,14 @@ main :: IO ()
 main = do
   runNoLoggingT $ withMySQLConn connectInfo $ runReaderT $ runMigration migrateAll
 
-  runNoLoggingT $ withMySQLPool connectInfo 100 \pool ->
-    liftIO $ run 3000 $ serve api $ hoistServer api (runServer pool) apiHandler
-  where
+  tokensMVar <- liftIO $ newMVar Map.empty
+  let
     runServer :: Pool SqlBackend -> ReaderT App Handler a -> Handler a
     runServer pool act = do
-      tokensMVar <- liftIO $ newMVar Map.empty
       runReaderT act $ App pool tokensMVar
+
+  runNoLoggingT $ withMySQLPool connectInfo 100 \pool ->
+    liftIO $ run 3000 $ serve api $ hoistServer api (runServer pool) apiHandler
 
 connectInfo :: ConnectInfo
 connectInfo =

@@ -18,6 +18,20 @@ packages:
       sha256: ea65ba54acb4362efedbfa7db616a51023579a6c83f18ab6d2ea6a84dea56021
   original:
     hackage: servant-server-0.17
+- completed:
+    hackage: servant-foreign-0.15.1@sha256:d911fe4a547e2afc356e35135d3359c3f080d693d00d58e01093cdd59ed8f5f0,2768
+    pantry-tree:
+      size: 590
+      sha256: 88bf81ae968f263b8f1ba30b1288971732a2679dd284b2a17c3cc58bd741ac2f
+  original:
+    hackage: servant-foreign-0.15.1
+- completed:
+    hackage: servant-js-0.9.4.2@sha256:2419d2cba7ff71926293fa11fc50eaed24a77ba34e7c778eab4cfa1f4bc4a748,3385
+    pantry-tree:
+      size: 961
+      sha256: c3c27de2989ed3537567ef531406ccd88c6e715cf85e8da554fca1da78c1104d
+  original:
+    hackage: servant-js-0.9.4.2
 snapshots:
 - completed:
     size: 496120
